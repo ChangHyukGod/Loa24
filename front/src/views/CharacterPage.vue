@@ -30,7 +30,9 @@ Character page
             <div style="display: flex; gap: 10px;">
                 <!-- 2) 캐릭터 이미지 -->
                 <div>
-                    <img :src="require('@/assets/캐릭터.jpg')" alt="샘플이미지">
+                    <img :src="require('@/assets/캐릭터.jpg')" alt="샘플이미지"
+                    style="width: 550px; height: 600px; clip-path: inset(60px 60px 0px 60px);">
+                    <!-- clip-path: inset(상 우 하 좌) -->
                 </div>
 
                 <!-- 3) 장비 -->

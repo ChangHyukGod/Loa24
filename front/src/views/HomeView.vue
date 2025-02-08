@@ -45,9 +45,35 @@
 </div>
 </template>
 <script>
+import { fetchExampleData } from '@/api'; //API 함수 가져오기
+
 export default {
-  
-}
+  data(){
+    return{
+      apiData: null, // API 응답 데이터를 저장할 변수
+      isLoading: true, // 로딩 상태 관리
+      errorMessage: null, // 에러 메시지 관리
+    };
+  },
+  methods: {
+    async loadApiData() {
+      this.isLoading = true; // 로딩 시작
+      this.errorMessage = null; // 이전 에러 초기화
+      try {
+        const response = await fetchExampleData(); // API 호출
+        this.apiData = response.data; // 응답 데이터 저장
+      } catch (error) {
+        console.error("API 호출 실패:", error);
+        this.errorMessage = error.response?.data?.message || "API 호출 중 오류가 발생했습니다.";
+      } finally {
+        this.isLoading = false; // 로딩 종료
+      }
+    },
+  },
+  mounted() {
+    this.loadApiData(); // 컴포넌트가 로드되면 API 호출
+  },
+};
 </script>
 <style>
   

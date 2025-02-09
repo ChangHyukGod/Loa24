@@ -7,7 +7,7 @@
       <div class="card flex-grow-1">
         <div class="card-body">
           <h5 class="card-title">경매장</h5>
-          <p class="card-text"></p>
+          <p class="card-text">아비도스 융화 재료</p>
           <canvas ref="myChart"></canvas>
         </div>
       </div>
@@ -118,33 +118,44 @@ export default {
     this.createChart(); // 컴포넌트가 화면에 보일 때 차트 생성
   },
   methods: {
+    // 차트 함수
     createChart() {
       const ctx = this.$refs.myChart.getContext('2d'); // canvas 요소 가져오기
       new Chart(ctx, {
         data: {
-          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+          labels: ['2025-02-04', '2025-02-05', '2025-02-06', '2025-02-07', '2025-02-08', '2025-02-09'],
           datasets: [
             {
-              label: '날짜',
-              data: [12, 19, 3, 5, 2, 8],
+              label: '판매 개수',
+              data: [10928463, 14877872, 17227409, 15827057, 19122707, 17778198],
               borderWidth: 1,
               type:'bar',
-              order: 1
+              order: 1,
+              yAxisID: 'y'
 
             },
             {
-              label: '판매 개수',
-              data: [10, 11, 6, 13, 2, 15],
+              label: '평균 거래가',
+              data: [70.1, 70.6, 72.2, 72.7, 73.3, 72.9],
               borderWidth: 1,
               type:'line',
-              order: 0
+              order: 0,
+              yAxisID: 'y1'
             },
           ]
         },
         options: {
           scales: {
             y: {
-              beginAtZero: true
+              beginAtZero: true,
+              position:'left'
+            },
+            y1:{
+              beginAtZero: true,
+              position:'right',
+              grid:{
+                drawOnChartArea:false,
+              },
             }
           }
         }

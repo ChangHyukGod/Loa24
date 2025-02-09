@@ -8,7 +8,7 @@
         <div class="card-body">
           <h5 class="card-title">경매장</h5>
           <p class="card-text"></p>
-          <img src="https://placehold.co/800x500" class="object-fit-none border rounded " alt="...">
+          <canvas ref="myChart"></canvas>
         </div>
       </div>
     </div>
@@ -71,8 +71,8 @@
                   <li class="list-group-item list-group-item-action">에키드나</li>
               </ul>
             </div>
-                        <!-- 네번째 캐릭 -->
-                        <img src="https://placehold.co/100x200" class="object-fit-cover border rounded col-sm-1">
+            <!-- 네번째 캐릭 -->
+            <img src="https://placehold.co/100x200" class="object-fit-cover border rounded col-sm-1">
             <div class="col-1">
               <ul class="list-group ">
                   <li class="list-group-item list-group-item-action">에기르</li>
@@ -80,7 +80,7 @@
                   <li class="list-group-item list-group-item-action">에키드나</li>
               </ul>
             </div>
-                        <!-- 다섯번째 캐릭 -->
+            <!-- 다섯번째 캐릭 -->
             <img src="https://placehold.co/100x200" class="object-fit-cover border rounded col-sm-1">
             <div class="col-1">
               <ul class="list-group ">
@@ -107,34 +107,50 @@
 </div>
 </template>
 <script>
-import { fetchExampleData } from '@/api'; //API 함수 가져오기
+// import { fetchExampleData } from '@/api'; //API 함수 가져오기
+import { Chart, registerables } from 'chart.js'; // Chart.js와 registerables 가져오기
+
+Chart.register(...registerables); // Chart.js에서 필요한 기능 등록
 
 export default {
-  data(){
-    return{
-      apiData: null, // API 응답 데이터를 저장할 변수
-      isLoading: true, // 로딩 상태 관리
-      errorMessage: null, // 에러 메시지 관리
-    };
+  name: 'HomeView',
+  mounted() {
+    this.createChart(); // 컴포넌트가 화면에 보일 때 차트 생성
   },
   methods: {
-    async loadApiData() {
-      this.isLoading = true; // 로딩 시작
-      this.errorMessage = null; // 이전 에러 초기화
-      try {
-        const response = await fetchExampleData(); // API 호출
-        this.apiData = response.data; // 응답 데이터 저장
-      } catch (error) {
-        console.error("API 호출 실패:", error);
-        this.errorMessage = error.response?.data?.message || "API 호출 중 오류가 발생했습니다.";
-      } finally {
-        this.isLoading = false; // 로딩 종료
-      }
-    },
-  },
-  mounted() {
-    this.loadApiData(); // 컴포넌트가 로드되면 API 호출
-  },
+    createChart() {
+      const ctx = this.$refs.myChart.getContext('2d'); // canvas 요소 가져오기
+      new Chart(ctx, {
+        data: {
+          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+          datasets: [
+            {
+              label: '날짜',
+              data: [12, 19, 3, 5, 2, 8],
+              borderWidth: 1,
+              type:'bar',
+              order: 1
+
+            },
+            {
+              label: '판매 개수',
+              data: [10, 11, 6, 13, 2, 15],
+              borderWidth: 1,
+              type:'line',
+              order: 0
+            },
+          ]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+  }
 };
 </script>
 <style>

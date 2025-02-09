@@ -1,37 +1,46 @@
 <template>
-Character page
-    <div style="display: flex; gap: 10px;">
+    <div class="container my-2" style="display: flex; gap: 10px;">
 
         <!-- 1. 캐릭터 이미지 및 장비정보 -->
-        <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; flex-direction: column; gap: 5px;">
 
             <!-- 1) 서버/닉네임/원대렙 -->
-            <div style="display: flex; gap: 10px; border: 2px solid black;">
-                <h3>실리안</h3>
-                <h3>할미의막내공쥬</h3>
-                <h3>Lv.213</h3>
+            <div style="display: flex; gap: 10px; justify-content: center; width: 550px;">
+                <p style="font-family: Jua; font-size: 20px;">도화가 |</p>
+                <p style="font-family: Jua; font-size: 20px;">실리안 |</p>
+                <p style="font-family: Jua; font-size: 20px;">원정대 Lv.213 |</p>
+                <p style="font-family: Jua; font-size: 20px;">영지 Lv.70 돈많은백수가꿈이에요</p>
             </div>
 
-            <!-- 전투렙, 템렙, 엘릭서, 초월, 앜패수치(진화, 깨달음, 도약) -->
-            <div style="display: flex; gap: 10px;">
-                <div>Lv.70</div>
-                <div>1670</div>
-                <div>42(선각자 2단계)</div>
-                <div>124개</div>
+            <div style="display: flex; gap: 10px; justify-content: center; align-items: baseline;
+            background-color: rgba(100, 205, 60, 0.5); width: 550px;">
+                <p style="font-family: Jua; font-size: 20px;">Lv.70</p>
+                <p style="font-family: Jua; font-size: 50px;">할미의막내공쥬</p>
+                <p style="font-family: Jua; font-size: 20px;">Lv.1670</p>
+            </div>
+
+            <!-- 엘릭서, 초월, 앜패수치(진화, 깨달음, 도약) -->
+            <div style="display: flex; gap: 10px; align-items: baseline; justify-content: center; width: 550px;">
+                <p style="font-family: Jua; font-size: 20px;">엘릭서 42(선각자 2단계) |</p>
+                <p style="font-family: Jua; font-size: 20px;">초월 총합 124개</p>
+                <p style="border-radius: 20px; border: 2px solid yellow; padding: 5px 12px;">108</p>
+                <p style="border-radius: 20px; border: 2px solid blue; padding: 5px 12px;">80</p>
+                <p style="border-radius: 20px; border: 2px solid green; padding: 5px 12px;">40</p>
             </div>
 
             <!-- 앜패수치(진화, 깨달음, 도약) -->
-            <div style="display: flex; gap: 10px;">
+            <!-- <div style="display: flex; gap: 10px;">
                 <div style="border-radius: 20px; border: 2px solid yellow; padding: 5px 12px;">108</div>
                 <div style="border-radius: 20px; border: 2px solid blue; padding: 5px 12px;">80</div>
                 <div style="border-radius: 20px; border: 2px solid green; padding: 5px 12px;">40</div>
-            </div>
+            </div> -->
 
-            <div style="display: flex; gap: 10px;">
+            <div style="display: flex; gap: 10px; align-items: flex-start;">
                 <!-- 2) 캐릭터 이미지 -->
-                <div>
+                <div style="width: 550px; height: 600px; overflow: hidden; position: relative;">
                     <img :src="require('@/assets/캐릭터.jpg')" alt="샘플이미지"
-                    style="width: 550px; height: 600px; clip-path: inset(60px 60px 0px 60px);">
+                    style="width: 550px; height: 600px; clip-path: inset(60px 60px 0px 60px);
+                    position: absolute; top: -60px;">
                     <!-- clip-path: inset(상 우 하 좌) -->
                 </div>
 
@@ -207,6 +216,10 @@ export default {
     }
 
     th {
-    background-color: #f4f4f4;
+    background-color: rgba(100, 205, 60, 0.5);
+    }
+
+    p {
+        margin: 0;
     }
 </style>

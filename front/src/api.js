@@ -14,5 +14,5 @@ const apiClient = axios.create({
 export const fetchExampleData = () => {
     return apiClient.get("/news/notices"); // API 경로를 추가
   };
-  
+
 export default apiClient;

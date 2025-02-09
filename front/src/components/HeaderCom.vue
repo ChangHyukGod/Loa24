@@ -10,8 +10,8 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/character">Character</a>
         </li>
-        <form class="d-flex" role="search" style="margin-left: 10px;">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="d-flex" role="search" style="margin-left: 100px;">
+            <input class="form-control me-2" type="search" placeholder="캐릭터 이름" aria-label="Search">
             <button class="btn btn-outline-success bt-size" type="submit">검색</button>
         </form>
       </ul>

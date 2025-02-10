@@ -10,17 +10,17 @@
           <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
             <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
             <label class="btn btn-outline-primary" for="btnradio1">강화 재료</label>
-
             <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
             <label class="btn btn-outline-primary" for="btnradio2"></label>
-
             <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
             <label class="btn btn-outline-primary" for="btnradio3">Radio 3</label>
           </div>
           <canvas ref="myChart"></canvas>
         </div>
       </div>
-    </div>
+    </div> 
+    <!-- 경매장 닫기 -->
+
     <div class="col-sm-3 d-flex flex-column ">
     <!-- 대표 캐릭터 -->
       <div class="card flex-grow-1 mb-2">
@@ -30,6 +30,8 @@
           <img src="https://placehold.co/200x200" class="object-fit-cover border rounded" alt="...">
         </div>
       </div>
+      <!-- 대표 캐릭터 닫기 -->
+
       <!-- 업데이트 내역 -->
       <div class="card flex-grow-1">
         <div class="card-body">
@@ -43,6 +45,8 @@
             </ul>
         </div>
       </div>
+      <!-- 업데이트 내역 닫기 -->
+
     </div>
   </div>
   <!-- 숙제현황표 -->

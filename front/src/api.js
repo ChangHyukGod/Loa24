@@ -11,7 +11,12 @@ const apiClient = axios.create({
 
 // 특정 API 호출 함수
 export const fetchExampleData = () => {
-    return apiClient.get("/markets/items/66102001"); // API 경로를 추가
+    return apiClient.get(`/markets/items/6861012`); // API 경로를 추가
   };
+
+export const fetchExampleData2 = (itemid) => {
+    return apiClient.get(`/markets/items/=${itemid}`); // API 경로를 추가
+  };
+
 
 export default apiClient;

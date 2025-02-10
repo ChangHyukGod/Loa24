@@ -7,7 +7,16 @@
       <div class="card flex-grow-1">
         <div class="card-body">
           <h5 class="card-title">경매장</h5>
-          <p class="card-text">아비도스 융화 재료</p>
+          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+            <label class="btn btn-outline-primary" for="btnradio1">강화 재료</label>
+
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+            <label class="btn btn-outline-primary" for="btnradio2"></label>
+
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+            <label class="btn btn-outline-primary" for="btnradio3">Radio 3</label>
+          </div>
           <canvas ref="myChart"></canvas>
         </div>
       </div>
@@ -107,27 +116,57 @@
 </div>
 </template>
 <script>
-// import { fetchExampleData } from '@/api'; //API 함수 가져오기
+import { fetchExampleData } from '@/api'; //API 함수 가져오기
 import { Chart, registerables } from 'chart.js'; // Chart.js와 registerables 가져오기
 
 Chart.register(...registerables); // Chart.js에서 필요한 기능 등록
 
 export default {
   name: 'HomeView',
+  data() {
+    return {
+      data: null, // API 응답 데이터를 저장
+      error: null, // 에러 메시지 저장
+      loading: true, // 로딩 상태 관리
+    };
+  },
   mounted() {
-    this.createChart(); // 컴포넌트가 화면에 보일 때 차트 생성
+    this.fetchData(); // 컴포넌트가 마운트되면 데이터 가져오기
   },
   methods: {
+    async fetchData() {
+      try {
+        this.loading = true; // 로딩 시작
+        const response = await fetchExampleData(); // API 호출
+        const stats = response.data[0].Stats;
+        const labels = stats
+          .map((item) => item.Date) // 날짜 가져오기
+          .map((dateString) => new Date(dateString)) // 문자열을 Date 객체로 변환
+          .sort((a, b) => a - b) // 날짜 순으로 정렬
+          .map((date) => date.toISOString().split('T')[0]); // ISO 포맷으로 다시 변환 (YYYY-MM-DD)
+        const tradeCounts = stats.map((item) => item.TradeCount); // 판매 개수
+        const avgPrices = stats.map((item) => item.AvgPrice); // 평균 거래가
+        this.createChart(labels,tradeCounts,avgPrices);
+        this.data = response.data; // 데이터 저장
+      } catch (err) {
+        this.error = err.message; // 에러 메시지 저장
+      } finally {
+        this.loading = false; // 로딩 종료
+      }
+    },
     // 차트 함수
-    createChart() {
+    createChart(labels,tradeCounts,avgPrices) {
       const ctx = this.$refs.myChart.getContext('2d'); // canvas 요소 가져오기
+      console.log(labels);
+      console.log(tradeCounts);
+      console.log(avgPrices);
       new Chart(ctx, {
         data: {
-          labels: ['2025-02-04', '2025-02-05', '2025-02-06', '2025-02-07', '2025-02-08', '2025-02-09'],
+          labels: labels,
           datasets: [
             {
               label: '판매 개수',
-              data: [10928463, 14877872, 17227409, 15827057, 19122707, 17778198],
+              data: tradeCounts,
               borderWidth: 1,
               type:'bar',
               order: 1,
@@ -136,7 +175,7 @@ export default {
             },
             {
               label: '평균 거래가',
-              data: [70.1, 70.6, 72.2, 72.7, 73.3, 72.9],
+              data:avgPrices,
               borderWidth: 1,
               type:'line',
               order: 0,
@@ -160,7 +199,7 @@ export default {
           }
         }
       });
-    }
+    },
   }
 };
 </script>

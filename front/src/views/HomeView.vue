@@ -7,15 +7,47 @@
       <div class="card flex-grow-1">
         <div class="card-body">
           <h5 class="card-title">경매장</h5>
+          <!-- 시세 카테고리 -->
           <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
             <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-            <label class="btn btn-outline-primary" for="btnradio1">강화 재료</label>
+            <label class="btn btn-outline-primary" for="btnradio1">재련 재료</label>
             <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnradio2"></label>
+            <label class="btn btn-outline-primary" for="btnradio2">각인서</label>
             <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnradio3">Radio 3</label>
+            <label class="btn btn-outline-primary" for="btnradio3">보석</label>
           </div>
-          <canvas ref="myChart"></canvas>
+          <!-- 시세 카테고리 닫기 -->
+          <div class="row mt-4">
+            <div class="col-4">
+              <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-action active" id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab" aria-controls="list-home">아비도스</a>
+                <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list" href="#list-profile" role="tab" aria-controls="list-profile">Profile</a>
+                <a class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list" href="#list-messages" role="tab" aria-controls="list-messages">Messages</a>
+                <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Settings</a>
+                <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Settings</a>
+                <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Settings</a>
+                <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Settings</a>
+                <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Settings</a>
+                <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Settings</a>
+                <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Settings</a>
+              </div>
+            </div>
+            <div class="col-8 ">
+              <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+                  <!-- 차트 -->
+                  <canvas ref="myChart"></canvas>
+                </div>
+                <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">...</div>
+                <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
+                <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">...</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 차트 -->
+          <!-- <canvas ref="myChart"></canvas> -->
+        
         </div>
       </div>
     </div> 
@@ -66,6 +98,7 @@
                   <li class="list-group-item list-group-item-action">에키드나</li>
               </ul>
             </div>
+            
             <!-- 두번째 캐릭 -->
             <img src="https://placehold.co/100x200" class="object-fit-cover border rounded col-sm-1">
             <div class="col-1">
@@ -75,6 +108,7 @@
                   <li class="list-group-item list-group-item-action">에키드나</li>
               </ul>
             </div>
+
             <!-- 세번째 캐릭 -->
             <img src="https://placehold.co/100x200" class="object-fit-cover border rounded col-sm-1">
             <div class="col-1">
@@ -84,6 +118,7 @@
                   <li class="list-group-item list-group-item-action">에키드나</li>
               </ul>
             </div>
+
             <!-- 네번째 캐릭 -->
             <img src="https://placehold.co/100x200" class="object-fit-cover border rounded col-sm-1">
             <div class="col-1">
@@ -93,6 +128,7 @@
                   <li class="list-group-item list-group-item-action">에키드나</li>
               </ul>
             </div>
+
             <!-- 다섯번째 캐릭 -->
             <img src="https://placehold.co/100x200" class="object-fit-cover border rounded col-sm-1">
             <div class="col-1">
@@ -102,6 +138,7 @@
                   <li class="list-group-item list-group-item-action">에키드나</li>
               </ul>
             </div>
+
           <!-- 여섯번째 캐릭 -->
           <img src="https://placehold.co/100x200" class="object-fit-cover border rounded col-sm-1">
             <div class="col-1">
@@ -111,12 +148,14 @@
                   <li class="list-group-item list-group-item-action">에키드나</li>
               </ul>
             </div>
+
           </div>
         </div>
         </div>
       </div>
     </div>
   </div>
+  <!-- 숙제현황표 닫기 -->
 </div>
 </template>
 <script>
@@ -188,6 +227,13 @@ export default {
           ]
         },
         options: {
+          maintainAspectRatio: true,
+          plugins: {
+            legend:{
+              fullSize : true,
+              position : 'center'
+            },
+          },
           scales: {
             y: {
               beginAtZero: true,

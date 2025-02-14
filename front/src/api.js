@@ -9,14 +9,31 @@ const apiClient = axios.create({
     },
 });
 
+// 카테고리 기본데이터 설정
+const defaultPostData = {
+  Sort: "GRADE",
+  CategoryCode: 50000,
+  CharacterClass: "",
+  ItemTier: 4,
+  ItemGrade: "",
+  ItemName: "",
+  PageNo: 0,
+  SortCondition: "ASC",
+};
+
 // 특정 API 호출 함수
-export const fetchExampleData = () => {
-    return apiClient.get(`/markets/items/6861012`); // API 경로를 추가
+export const fetchExampleData = (itemId) => {
+    return apiClient.get(`/markets/items/${itemId}`); // API 경로를 추가
   };
 
-export const fetchExampleData2 = (itemid) => {
-    return apiClient.get(`/markets/items/=${itemid}`); // API 경로를 추가
-  };
+export const fetchExampleData2 = (overrides = {}) => {
+  // 기본 데이터와 사용자 데이터 병합
+  const requestData = {...defaultPostData, ...overrides};
+  return apiClient.post(`/markets/items`,requestData); // API 경로를 추가
+};
 
 
-export default apiClient;
+export default {
+  fetchExampleData,
+  fetchExampleData2,
+};

@@ -2,69 +2,48 @@
   <!-- 전체  -->
   <div class ="card container text-center p-3 mt-5">
   <div class="row">
-  <!-- 경매장 -->
-    <div class="col-sm-9 d-flex">
-      <div class="card flex-grow-1">
-        <div class="card-body">
-          <h5 class="card-title">경매장</h5>
-          <!-- 시세 카테고리 -->
-          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked >
-            <label class="btn btn-outline-primary" for="btnradio1" @click="handleCategoryChange('T4_재련재료')">T4 재련 재료</label>
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnradio2" @click="handleCategoryChange('유물각인서')">유물 각인서</label>
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnradio3">보석</label>
-          </div>
-          <!-- 시세 카테고리 닫기 -->
-
-          <!-- 카테고리 별 상품 종류 -->
-          <div class="row mt-4">
-            <div class="col-4">
-              <div class="list-group" id="list-tab" role="tablist">
-                <!-- API에서 받은 아이템 데이터로 메뉴 동적으로 생성 -->
-                <a 
-                  v-for="(item, index) in items" 
-                  :key="item.code" 
-                  class="list-group-item list-group-item-action" 
-                  :class="{'bg-white': index % 2 === 0, 'bg-light': index % 2 !== 0}"
-                  :id="'list-' + item.Id + '-list'" 
-                  data-bs-toggle="list" 
-                  :href="'#list-' + item.Id" 
-                  role="tab" 
-                  :aria-controls="'list-' + item.Id"
-                  @click="fetchData(item)"
-                >
-                  {{ item.Name }}
-                </a>
-              </div>
+      <!-- 경매장 -->
+      <div class="col-sm-9 d-flex">
+        <div class="card flex-grow-1">
+          <div class="card-body">
+            <h5 class="card-title">경매장</h5>
+            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+              <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+              <label class="btn btn-outline-primary" for="btnradio1" @click="handleCategoryChange('T4_재련재료')">T4 재련 재료</label>
+              <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+              <label class="btn btn-outline-primary" for="btnradio2" @click="handleCategoryChange('유물각인서')">유물 각인서</label>
+              <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+              <label class="btn btn-outline-primary" for="btnradio3">보석</label>
             </div>
-            <div class="col-8 ">
-              <div class="tab-content" id="nav-tabContent">
-                <!-- 받아온 아이템 데이터를 기반으로 각각의 탭 콘텐츠 생성 -->
-                <div 
-                  v-for="item in items" 
-                  :key="'content-' + item.Id"
-                  class="tab-pane fade" 
-                  :id="'list-' + item.Id" 
-                  role="tabpanel" 
-                  :aria-labelledby="'list-' + item.Id + '-list'"
-                >
-                <div>
-                  <h4>{{ item.Name }}</h4>
-                  <img :src="item.Icon" alt="item image" />
+            <div class="row mt-4">
+              <div class="col-4">
+                <div class="list-group" id="list-tab" role="tablist">
+                  <a v-for="(item, index) in items" :key="item.code" class="list-group-item list-group-item-action" 
+                     :class="{'bg-white': index % 2 === 0, 'bg-light': index % 2 !== 0}"
+                     :id="'list-' + item.Id + '-list'" data-bs-toggle="modal"
+                     :data-bs-target="'#modal-' + item.Id" role="button"
+                     :aria-controls="'list-' + item.Id" @click="fetchData(item)">
+                    {{ item.Name }}
+                  </a>
                 </div>
+              </div>
+              <div v-for="item in items" :key="'modal-' + item.Id" class="modal fade" :id="'modal-' + item.Id" tabindex="-1" :aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">{{ item.Name }}</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <canvas :ref="'myChart-' + item.Id"></canvas>
+                    </div>
+                  </div>
                 </div>
-              <!-- 차트 -->
-              <canvas ref="myChart"></canvas>
               </div>
             </div>
           </div>
-          <!-- 카테고리 별 상품 종류 닫기 -->
-
         </div>
       </div>
-    </div> 
     <!-- 경매장 닫기 -->
 
     <div class="col-sm-3 d-flex flex-column ">
@@ -176,6 +155,7 @@
 import api from '@/api'; //API 함수 가져오기
 import { Chart, registerables } from 'chart.js'; // Chart.js와 registerables 가져오기
 
+
 Chart.register(...registerables); // Chart.js에서 필요한 기능 등록
 
 export default {
@@ -194,6 +174,7 @@ export default {
       items:[],
       totalCount: 0, // 전체 아이템 개수
       page:1,
+      charts: {},
     };
   },
   methods: {
@@ -207,7 +188,6 @@ export default {
           this.selectedItemGrade = "";
           // console.log("T4 Materials selected:", this.selectedCategory, this.selectedItemTier); // 디버깅
           this.datanum = 0;
-          this.sendCategory(); // 데이터 초기화 후 아이템 호출
           this.items = []; // 함수를 실행시킨 뒤 items 초기화
           break;
 
@@ -217,13 +197,13 @@ export default {
           this.selectedItemGrade = "유물";
           // console.log("Engravings selected:", this.selectedCategory, this.selectedItemGrade); // 디버깅
           this.datanum = 1;
-          this.sendCategory();// 데이터 초기화 후 아이템 호출
           this.items = []; // 함수를 실행시킨 뒤 items 초기화
           break;
 
         default:
           console.error("Unknown category type:", type);
       }
+      this.sendCategory(); // 데이터 초기화 후 아이템 호출
     },
     // 카테고리별 아이템 불러오기
     async sendCategory() {
@@ -240,9 +220,7 @@ export default {
             pageNo: currentPage,
           });
 
-          // 받은 데이터에서 items와 totalCount 값을 추출
-          const newItems = response.data.Items;
-          this.items.push(...newItems); // 기존 아이템 배열에 새로 받은 아이템 추가
+          this.items.push(...response.data.Items); // 기존 아이템 배열에 새로 받은 아이템 추가
           
           // 전체 아이템 개수를 업데이트
           this.totalCount = response.data.TotalCount;
@@ -259,84 +237,49 @@ export default {
       }
     },
     // 아이템 시세 확인
-    async fetchData(items) {
+    async fetchData(item) {
       try {
-        this.loading = true; // 로딩 시작
-        const response = await api.fetchExampleData(items.Id); // API 호출
-        
+        const response = await api.fetchExampleData(item.Id);
         const stats = response.data[this.datanum].Stats;
-        const labels = stats
-          .map((item) => item.Date) // 날짜 가져오기
-          .map((dateString) => new Date(dateString)) // 문자열을 Date 객체로 변환
-          .sort((a, b) => a - b) // 날짜 순으로 정렬
-          .map((date) => date.toISOString().split('T')[0]); // ISO 포맷으로 다시 변환 (YYYY-MM-DD)
-        const tradeCounts = stats.map((item) => item.TradeCount); // 판매 개수
-        const avgPrices = stats.map((item) => item.AvgPrice); // 평균 거래가
-        this.createChart(labels,tradeCounts,avgPrices);
-        this.data = response.data; // 데이터 저장
+        const labels = stats.map((item) => new Date(item.Date).toISOString().split('T')[0]);
+        const tradeCounts = stats.map((item) => item.TradeCount);
+        const avgPrices = stats.map((item) => item.AvgPrice);
+        
+        this.createChart(item.Id, labels, tradeCounts, avgPrices);
+        
+        this.data = response.data;
       } catch (err) {
-        this.error = err.message; // 에러 메시지 저장
-      } finally {
-        this.loading = false; // 로딩 종료
+        this.error = err.message;
       }
     },
     // 차트 설정
-    createChart(labels, tradeCounts, avgPrices) {
-      const ctx = this.$refs.myChart.getContext('2d'); // canvas 요소 가져오기
+    createChart(id, labels, tradeCounts, avgPrices) {
+      const canvas = this.$refs[`myChart-${id}`];
+      if (!canvas) return;
 
-      // 이미 차트가 존재하는 경우, 기존 차트 데이터를 업데이트
-      if (this.myChart) {
-        // labels, tradeCounts, avgPrices 변경
-        this.myChart.data.labels = labels;
-        this.myChart.data.datasets[0].data = tradeCounts;
-        this.myChart.data.datasets[1].data = avgPrices;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
 
-        // 차트 업데이트
-        this.myChart.update();
+      if (this.charts[id]) {
+        this.charts[id].data.labels = labels;
+        this.charts[id].data.datasets[0].data = tradeCounts;
+        this.charts[id].data.datasets[1].data = avgPrices;
+        this.charts[id].update();
       } else {
-        // 차트가 없다면 새로 생성
-        this.myChart = new Chart(ctx, {
+        this.charts[id] = new Chart(ctx, {
           type: 'bar',
           data: {
             labels: labels,
             datasets: [
-              {
-                label: '판매 개수',
-                data: tradeCounts,
-                borderWidth: 1,
-                type: 'bar',
-                order: 1,
-                yAxisID: 'y',
-              },
-              {
-                label: '평균 거래가',
-                data: avgPrices,
-                borderWidth: 1,
-                type: 'line',
-                order: 0,
-                yAxisID: 'y1',
-              },
+              { label: '판매 개수', data: tradeCounts, type: 'bar', yAxisID: 'y' },
+              { label: '평균 거래가', data: avgPrices, type: 'line', yAxisID: 'y1' },
             ],
           },
           options: {
-            maintainAspectRatio: true,
-            plugins: {
-              legend: {
-                position: 'center',
-              },
-            },
+            maintainAspectRatio: false,
             scales: {
-              y: {
-                beginAtZero: true,
-                position: 'left',
-              },
-              y1: {
-                beginAtZero: true,
-                position: 'right',
-                grid: {
-                  drawOnChartArea: false,
-                },
-              },
+              y: { beginAtZero: true, position: 'left' },
+              y1: { beginAtZero: true, position: 'right', grid: { drawOnChartArea: false } },
             },
           },
         });
